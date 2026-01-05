@@ -1,6 +1,6 @@
 import express, { Application } from "express";
 import cors from "cors";
-import { postRouter } from "./modules/post/post.routers";
+import { postRouter } from "./modules/post/post.routes";
 import { auth } from "./libs/auth";
 import { toNodeHandler } from "better-auth/node";
 
