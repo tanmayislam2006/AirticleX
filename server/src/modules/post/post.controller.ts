@@ -27,7 +27,22 @@ const getAllPosts = async (req: Request, res: Response) => {
     const searchStr = typeof search === "string" ? search : undefined;
     const tags = req.query.tags ? (req.query.tags as string).split(",") : [];
     const status = req.query.status as PostStatus | undefined;
-    const result = await postServices.getAllPosts({ search: searchStr, tags,status });
+    const authorID = req.query.authorID as string | undefined;
+    const isFeatures = req.query.isFeatures
+      ? req.query.isFeatures === "true"
+        ? true
+        : req.query.isFeatures === "false"
+        ? false
+        : undefined
+      : undefined;
+
+    const result = await postServices.getAllPosts({
+      search: searchStr,
+      tags,
+      status,
+      authorID,
+      isFeatures,
+    });
     res.status(200).json({
       success: true,
       messages: "Posts Retrieved Successfully",

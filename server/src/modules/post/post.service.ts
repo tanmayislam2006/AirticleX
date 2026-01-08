@@ -19,10 +19,14 @@ const getAllPosts = async ({
   search,
   tags,
   status,
+  authorID,
+  isFeatures,
 }: {
   search: string | undefined;
   tags: string[] | [];
   status?: PostStatus | undefined;
+  authorID: string | undefined;
+  isFeatures: boolean | undefined;
 }) => {
   const searchCondition: PostWhereInput[] = [];
   if (search) {
@@ -63,6 +67,18 @@ const getAllPosts = async ({
     });
   }
 
+  if (authorID) {
+    searchCondition.push({
+      authorID,
+    });
+  }
+
+  
+  if (typeof isFeatures === "boolean") {
+    searchCondition.push({
+      isFeatures,
+    });
+  }
   const result = await prisma.post.findMany({
     where: {
       AND: searchCondition,
