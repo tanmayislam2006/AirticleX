@@ -73,7 +73,6 @@ const getAllPosts = async ({
     });
   }
 
-  
   if (typeof isFeatures === "boolean") {
     searchCondition.push({
       isFeatures,
@@ -86,7 +85,24 @@ const getAllPosts = async ({
   });
   return result;
 };
+
+const getPostById = async (id: string) => {
+  return await prisma.$transaction(async (tx) => {
+    const post = await tx.post.findUnique({
+      where: { id },
+    });
+    if (post) {
+      await tx.post.update({
+        where: { id },
+        data: { views: { increment: 1 } },
+      });
+    }
+    return post;
+  });
+};
+
 export const postServices = {
   createPost,
   getAllPosts,
+  getPostById,
 };
