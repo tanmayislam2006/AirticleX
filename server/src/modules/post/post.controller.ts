@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { postServices } from "./post.service";
+import { PostStatus } from "../../enum/postStatus";
 
 const createPost = async (req: Request, res: Response) => {
   try {
@@ -24,8 +25,9 @@ const getAllPosts = async (req: Request, res: Response) => {
   try {
     const { search } = req.query;
     const searchStr = typeof search === "string" ? search : undefined;
-    console.log(search);
-    const result = await postServices.getAllPosts({ search: searchStr });
+    const tags = req.query.tags ? (req.query.tags as string).split(",") : [];
+    const status = req.query.status as PostStatus | undefined;
+    const result = await postServices.getAllPosts({ search: searchStr, tags,status });
     res.status(200).json({
       success: true,
       messages: "Posts Retrieved Successfully",

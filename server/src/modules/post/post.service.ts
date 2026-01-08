@@ -1,3 +1,4 @@
+import { PostStatus } from "../../enum/postStatus";
 import { Post } from "../../generated/prisma/client";
 import { PostWhereInput } from "../../generated/prisma/models";
 import { prisma } from "../../libs/prisma";
@@ -14,7 +15,15 @@ const createPost = async (
   });
   return result;
 };
-const getAllPosts = async ({ search }: { search: string | undefined }) => {
+const getAllPosts = async ({
+  search,
+  tags,
+  status,
+}: {
+  search: string | undefined;
+  tags: string[] | [];
+  status?: PostStatus | undefined;
+}) => {
   const searchCondition: PostWhereInput[] = [];
   if (search) {
     searchCondition.push({
@@ -39,6 +48,21 @@ const getAllPosts = async ({ search }: { search: string | undefined }) => {
       ],
     });
   }
+
+  if (tags.length > 0) {
+    searchCondition.push({
+      tags: {
+        hasEvery: tags,
+      },
+    });
+  }
+
+  if (status) {
+    searchCondition.push({
+      status,
+    });
+  }
+
   const result = await prisma.post.findMany({
     where: {
       AND: searchCondition,
