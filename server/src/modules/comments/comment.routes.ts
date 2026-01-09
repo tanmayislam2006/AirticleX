@@ -3,7 +3,8 @@ import auth from "../../middleware/authMiddleware";
 import { UserRole } from "../../enum/userRole";
 import { commentController } from "./comment.controller";
 const router = Router();
-router.get("/:commentId", commentController.getCommentById);
+router.get("/:commentID", commentController.getCommentById);
+router.get("/author/:authorID", commentController.getCommentsByAuthor);
 router.post(
   "/",
   auth(UserRole.ADMIN, UserRole.USER),
