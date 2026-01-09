@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { postServices } from "./post.service";
 import { PostStatus } from "../../enum/postStatus";
+import paginationHelper from "../../helpers/paginationHelper";
 
 const createPost = async (req: Request, res: Response) => {
   try {
@@ -35,13 +36,18 @@ const getAllPosts = async (req: Request, res: Response) => {
         ? false
         : undefined
       : undefined;
-
+    const { page, limit, skip, sortBy, sortOrder } = paginationHelper(
+      req.query
+    );
     const result = await postServices.getAllPosts({
       search: searchStr,
       tags,
       status,
       authorID,
       isFeatures,
+      page,
+      limit,
+      skip,
     });
     res.status(200).json({
       success: true,
