@@ -23,6 +23,7 @@ enum CommentStatus {
   APPROVED
   REJECT
 }
+
 enum Role {
   USER
   ADMIN
@@ -56,9 +57,9 @@ model Comment {
   content   String        @db.Text
   authorID  String
   postID    String
-  post      Post          @relation(fields: [postID], references: [id])
+  post      Post          @relation(fields: [postID], references: [id], onDelete: Cascade)
   parentID  String?
-  parent    Comment?      @relation("CommentReplies", fields: [parentID], references: [id])
+  parent    Comment?      @relation("CommentReplies", fields: [parentID], references: [id], onDelete: Cascade)
   replies   Comment[]     @relation("CommentReplies")
   status    CommentStatus @default(APPROVED)
   createdAt DateTime      @default(now())
