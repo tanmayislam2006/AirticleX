@@ -53,6 +53,28 @@ const getCommentsByAuthor = async (req: Request, res: Response) => {
     });
   }
 };
+const updateComment = async (req: Request, res: Response) => {
+  try {
+    const { commentID } = req.params;
+    const user = req.user;
+    const result = await commentService.updateComment(
+      user?.id as string,
+      commentID as string,
+      req.body
+    );
+    res.status(200).json({
+      success: true,
+      messages: "Comment Update Successfully",
+      data: result,
+    });
+  } catch (e: any) {
+    res.status(400).json({
+      success: false,
+      error: "Can Not Update Comment",
+      data: e,
+    });
+  }
+};
 const deleteComment = async (req: Request, res: Response) => {
   try {
     const { commentID } = req.params;
@@ -79,4 +101,5 @@ export const commentController = {
   getCommentById,
   getCommentsByAuthor,
   deleteComment,
+  updateComment,
 };

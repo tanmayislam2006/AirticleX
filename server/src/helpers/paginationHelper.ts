@@ -26,4 +26,4 @@ const paginationHelper = (options: IOption): IOptionResults => {
     sortOrder,
   };
 };
-export default paginationHelper
+export default paginationHelper;
