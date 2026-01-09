@@ -53,8 +53,30 @@ const getCommentsByAuthor = async (req: Request, res: Response) => {
     });
   }
 };
+const deleteComment = async (req: Request, res: Response) => {
+  try {
+    const { commentID } = req.params;
+    const user = req.user;
+    const result = await commentService.deleteComment(
+      user?.id as string,
+      commentID as string
+    );
+    res.status(200).json({
+      success: true,
+      messages: "Comment Delete Successfully",
+      data: result,
+    });
+  } catch (e: any) {
+    res.status(400).json({
+      success: false,
+      error: "Can Not Delete Comment",
+      data: e,
+    });
+  }
+};
 export const commentController = {
   createComment,
   getCommentById,
-  getCommentsByAuthor
+  getCommentsByAuthor,
+  deleteComment,
 };
