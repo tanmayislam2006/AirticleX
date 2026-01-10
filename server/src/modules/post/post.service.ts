@@ -1,6 +1,6 @@
 import { CommentStatus } from "../../enum/commentStatus";
 import { PostStatus } from "../../enum/postStatus";
-import { Post } from "../../generated/prisma/client";
+import { Post, UserStatus } from "../../generated/prisma/client";
 import { PostWhereInput } from "../../generated/prisma/models";
 import { prisma } from "../../libs/prisma";
 
@@ -149,9 +149,41 @@ const getPostById = async (id: string) => {
     return post;
   });
 };
+const getMyPost = async (
+  id: string,
+  page: number,
+  limit: number,
+  skip: number
+) => {
+  await prisma.user.findUniqueOrThrow({
+    where: {
+      id,
+      status: UserStatus.ACTIVE,
+    },
+  });
+  const result = await prisma.post.findMany({
+    take: limit,
+    skip: skip,
+    where: {
+      authorID: id,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+    include: {
+      _count: {
+        select: {
+          comments: true,
+        },
+      },
+    },
+  });
+  return result;
+};
 
 export const postServices = {
   createPost,
   getAllPosts,
   getPostById,
+  getMyPost,
 };

@@ -82,8 +82,30 @@ const getPostById = async (req: Request, res: Response) => {
     });
   }
 };
+const getMyPost = async (req: Request, res: Response) => {
+  try {
+    const user =req.user
+    const {page,limit,skip}=paginationHelper(req.query)
+    if (!user) {
+      throw new Error("You are unauthorized!")
+    }
+    const result = await postServices.getMyPost(user.id as string,page,limit,skip);
+    res.status(200).json({
+      success: true,
+      messages: "Post Data Get Successfully",
+      data: result,
+    });
+  } catch (e: any) {
+    res.status(400).json({
+      success: false,
+      error: "Can not Get Post Data",
+      data: e,
+    });
+  }
+};
 export const postController = {
   createPost,
   getAllPosts,
   getPostById,
+  getMyPost
 };

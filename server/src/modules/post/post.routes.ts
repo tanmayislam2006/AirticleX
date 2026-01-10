@@ -5,6 +5,7 @@ import { UserRole } from "../../enum/userRole";
 
 const router = Router();
 router.get("/", postController.getAllPosts);
+router.get("/my-posts", auth(UserRole.USER, UserRole.ADMIN), postController.getMyPost);
 router.get("/:id", postController.getPostById);
 router.post(
   "/",
