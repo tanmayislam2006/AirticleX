@@ -109,6 +109,38 @@ const getMyPost = async (req: Request, res: Response) => {
     });
   }
 };
+const updatePost = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    if (!id) {
+      throw new Error("Post ID is required");
+    }
+    const user = req.user;
+    if (!user) {
+      throw new Error("You are Unauthorized");
+    }
+    const isAdmin = user?.role === UserRole.ADMIN;
+    const result = await postServices.updatePost(
+      id as string,
+      user?.id,
+      isAdmin,
+      req.body
+    );
+    res.status(200).json({
+      success: true,
+      messages: "Update Post Data Successfully",
+      data: result,
+    });
+  } catch (e: any) {
+    const errorMessage =
+      e instanceof Error ? e.message : "Can not Update Post Data";
+    res.status(400).json({
+      success: false,
+      error: errorMessage,
+      data: e,
+    });
+  }
+};
 const deletePost = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -143,5 +175,6 @@ export const postController = {
   getAllPosts,
   getPostById,
   getMyPost,
+  updatePost,
   deletePost,
 };
