@@ -68,6 +68,30 @@ const updateComment = async (
     data,
   });
 };
+const moderateComment = async (
+  commentID: string,
+  data: { content?: string; status?: CommentStatus }
+) => {
+  const isOwner = await prisma.comment.findUniqueOrThrow({
+    where: {
+      id: commentID,
+    },
+    select: {
+      id: true,
+      status: true,
+    },
+  });
+
+  if (isOwner.status === data.status) {
+    throw new Error(`Your provided status ${data.status} is up to date`);
+  }
+  return await prisma.comment.update({
+    where: {
+      id: commentID,
+    },
+    data,
+  });
+};
 const deleteComment = async (authorID: string, commentID: string) => {
   const isOwner = await prisma.comment.findFirst({
     where: {
@@ -87,10 +111,12 @@ const deleteComment = async (authorID: string, commentID: string) => {
     },
   });
 };
+
 export const commentService = {
   createComment,
   getCommentById,
   getCommentsByAuthor,
   deleteComment,
   updateComment,
+  moderateComment,
 };
