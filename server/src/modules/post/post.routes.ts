@@ -12,5 +12,6 @@ router.post(
   auth(UserRole.USER, UserRole.ADMIN),
   postController.createPost
 );
+router.delete("/:id",auth(UserRole.USER, UserRole.ADMIN), postController.deletePost);
 
 export const postRouter: Router = router;
