@@ -10,7 +10,9 @@ router.get(
   auth(UserRole.USER, UserRole.ADMIN),
   postController.getMyPost
 );
+router.get("/states", auth(UserRole.ADMIN), postController.getAdminStates);
 router.get("/:id", postController.getPostById);
+
 router.post(
   "/",
   auth(UserRole.USER, UserRole.ADMIN),

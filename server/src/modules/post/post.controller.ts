@@ -83,6 +83,19 @@ const getPostById = async (req: Request, res: Response) => {
     });
   }
 };
+const getAdminStates = async (req: Request, res: Response) => {
+  try {
+    const result = await postServices.getAdminStates();
+    res.status(200).json(result);
+  } catch (e) {
+    const errorMessage =
+      e instanceof Error ? e.message : "Stats fetched failed!";
+    res.status(400).json({
+      error: errorMessage,
+      details: e,
+    });
+  }
+};
 const getMyPost = async (req: Request, res: Response) => {
   try {
     const user = req.user;
@@ -175,6 +188,7 @@ export const postController = {
   getAllPosts,
   getPostById,
   getMyPost,
+  getAdminStates,
   updatePost,
   deletePost,
 };
