@@ -27,27 +27,26 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} min-h-screen bg-white font-sans antialiased text-zinc-900`}
+        className={`${geistSans.variable} ${geistMono.variable} min-h-screen font-sans antialiased`}
       >
-        <Navbar />
-        {/* Page Content */}
-
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
+          <Navbar />
+          {/* Page Content */}
           <main className="mx-auto min-h-[calc(100vh-128px)] container px-4 py-10">
             {children}
           </main>
+          {/* Footer */}
+          <footer className="border-t">
+            <div className="mx-auto max-w-6xl px-6 py-6 text-sm text-muted-foreground">
+              © {new Date().getFullYear()} ArticleX. All rights reserved.
+            </div>
+          </footer>
         </ThemeProvider>
-        {/* Footer */}
-        <footer className="border-t border-zinc-200">
-          <div className="mx-auto max-w-6xl px-6 py-6 text-sm text-zinc-500">
-            © {new Date().getFullYear()} ArticleX. All rights reserved.
-          </div>
-        </footer>
       </body>
     </html>
   );
