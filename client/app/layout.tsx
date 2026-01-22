@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Navbar } from "@/components/Layout/Navbar";
+
 
 const geistSans = Geist({
   subsets: ["latin"],
@@ -27,17 +29,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} min-h-screen bg-white font-sans antialiased text-zinc-900`}
       >
-        {/* Top Navigation */}
-        <header className="border-b border-zinc-200">
-          <div className="mx-auto flex h-16 max-w-6xl items-center px-6">
-            <span className="text-lg font-semibold tracking-tight">
-              ArticleX
-            </span>
-          </div>
-        </header>
 
+        <Navbar />
         {/* Page Content */}
-        <main className="mx-auto min-h-[calc(100vh-128px)] max-w-6xl px-6 py-10">
+        <main className="mx-auto min-h-[calc(100vh-128px)] container px-4 py-10">
           {children}
         </main>
 
