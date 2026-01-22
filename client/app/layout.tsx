@@ -29,8 +29,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} min-h-screen bg-white font-sans antialiased text-zinc-900`}
       >
-        <Navbar />
-        {/* Page Content */}
+
 
         <ThemeProvider
           attribute="class"
@@ -38,16 +37,8 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <main className="mx-auto min-h-[calc(100vh-128px)] container px-4 py-10">
-            {children}
-          </main>
+          {children}
         </ThemeProvider>
-        {/* Footer */}
-        <footer className="border-t border-zinc-200">
-          <div className="mx-auto max-w-6xl px-6 py-6 text-sm text-zinc-500">
-            © {new Date().getFullYear()} ArticleX. All rights reserved.
-          </div>
-        </footer>
       </body>
     </html>
   );
