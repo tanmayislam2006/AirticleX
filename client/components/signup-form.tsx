@@ -1,21 +1,30 @@
-import { Button } from "@/components/ui/button"
+"use client";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import {
   Field,
   FieldDescription,
   FieldGroup,
   FieldLabel,
-} from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
-import Link from "next/link"
+} from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import { authClient } from "@/lib/auth-client";
+import Link from "next/link";
 
 export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
+  const handleGoogleSignUp = async () => {
+    const data = await authClient.signIn.social({
+      provider: "google",
+      callbackURL: "http://localhost:3000",
+    });
+   
+  };
   return (
     <Card {...props}>
       <CardHeader>
@@ -50,7 +59,11 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
             <FieldGroup>
               <Field>
                 <Button type="submit">Create Account</Button>
-                <Button variant="outline" type="button">
+                <Button
+                  onClick={() => handleGoogleSignUp()}
+                  variant="outline"
+                  type="button"
+                >
                   Sign up with Google
                 </Button>
                 <FieldDescription className="px-6 text-center">
@@ -62,5 +75,5 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
         </form>
       </CardContent>
     </Card>
-  )
+  );
 }
