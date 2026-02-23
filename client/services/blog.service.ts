@@ -23,6 +23,25 @@ interface PaginationMeta {
   totalPages: number;
 }
 
+export interface BlogComment {
+  id: string;
+  content: string;
+  authorID: string;
+  postID: string;
+  parentID: string | null;
+  status: "APPROVED" | "REJECT";
+  createdAt: string;
+  updatedAt: string;
+  replies: BlogComment[];
+}
+
+interface PostDetailPayload extends BlogPost {
+  comments: BlogComment[];
+  _count: {
+    comments: number;
+  };
+}
+
 interface PostsPayload {
   result: BlogPost[];
   pagination: PaginationMeta;
@@ -124,6 +143,33 @@ const getPosts = async (
   }
 };
 
+const getPostById = async (id: string): Promise<ServiceResult<PostDetailPayload>> => {
+  try {
+    const res = await fetch(`${POSTS_URL}/${id}`, {
+      cache: "no-store",
+    });
+
+    if (!res.ok) {
+      return {
+        data: null,
+        error: { message: "Could not load post details from server." },
+      };
+    }
+
+    const json = (await res.json()) as ApiResponse<PostDetailPayload>;
+    return {
+      data: json.data,
+      error: null,
+    };
+  } catch {
+    return {
+      data: null,
+      error: { message: "Network error while loading post details." },
+    };
+  }
+};
+
 export const blogService = {
   getPosts,
+  getPostById,
 };

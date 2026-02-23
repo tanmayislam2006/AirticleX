@@ -120,29 +120,31 @@ export default async function Home({ searchParams }: PageProps) {
                 className="group overflow-hidden rounded-3xl border-zinc-200/80 bg-white/85 py-0 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-zinc-900/10"
               >
                 <CardContent className="p-0">
-                  {post.thumbnail ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={post.thumbnail}
-                      alt={post.title}
-                      className="h-44 w-full object-cover transition duration-500 group-hover:scale-105"
-                    />
-                  ) : (
-                    <div className="flex h-44 w-full items-center justify-center bg-gradient-to-r from-cyan-100 to-amber-100 text-sm font-medium text-zinc-600">
-                      No thumbnail
+                  <Link href={`/posts/${post.id}`} className="block">
+                    {post.thumbnail ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={post.thumbnail}
+                        alt={post.title}
+                        className="h-44 w-full object-cover transition duration-500 group-hover:scale-105"
+                      />
+                    ) : (
+                      <div className="flex h-44 w-full items-center justify-center bg-gradient-to-r from-cyan-100 to-amber-100 text-sm font-medium text-zinc-600">
+                        No thumbnail
+                      </div>
+                    )}
+                    <div className="space-y-3 p-5">
+                      <p className="text-xs font-semibold tracking-wide text-zinc-500 uppercase">
+                        {formatDate(post.createdAt)}
+                      </p>
+                      <h3 className="line-clamp-2 text-lg font-semibold text-zinc-900">
+                        {post.title}
+                      </h3>
+                      <p className="line-clamp-3 text-sm text-zinc-600">
+                        {excerpt(post.content, 120)}
+                      </p>
                     </div>
-                  )}
-                  <div className="space-y-3 p-5">
-                    <p className="text-xs font-semibold tracking-wide text-zinc-500 uppercase">
-                      {formatDate(post.createdAt)}
-                    </p>
-                    <h3 className="line-clamp-2 text-lg font-semibold text-zinc-900">
-                      {post.title}
-                    </h3>
-                    <p className="line-clamp-3 text-sm text-zinc-600">
-                      {excerpt(post.content, 120)}
-                    </p>
-                  </div>
+                  </Link>
                 </CardContent>
               </Card>
             ))}
@@ -287,9 +289,11 @@ function PostCard({ post }: { post: BlogPost }) {
         </div>
         <div className="mt-6 flex items-center justify-between">
           <p className="text-xs text-zinc-500">{formatDate(post.createdAt)}</p>
-          <Button variant="ghost" size="sm" className="rounded-full">
-            Read article
-            <ArrowRight className="h-3.5 w-3.5" />
+          <Button asChild variant="ghost" size="sm" className="rounded-full">
+            <Link href={`/posts/${post.id}`}>
+              Read article
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
           </Button>
         </div>
       </CardContent>
